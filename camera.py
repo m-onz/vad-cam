@@ -1,6 +1,6 @@
 # python camera.py
 
-from pyimagesearch.centroidtracker import CentroidTracker
+#from pyimagesearch.centroidtracker import CentroidTracker
 from keras.preprocessing.image import img_to_array
 from keras.models import load_model
 from imutils.video import VideoStream
@@ -40,17 +40,15 @@ print("[INFO] loading model...")
 model = load_model('./node-drone.model')
 
 print("[INFO] starting video stream...")
-vs = VideoStream(src=1).start()
+vs = VideoStream(src=0).start()
 # vs = VideoStream(usePiCamera=True).start()
 time.sleep(2.0)
-
 # model = load_model('./node-drone.model')
-ct = CentroidTracker()
 
 firstFrame = None
 
 def alert_on_drone (img):
-	d = datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p")
+	d = datetime.datetime.now().strftime("%A-%d-%B-%Y-%I-%M-%S%p")
 	print('DRONE DETECTED')
 	print(d)
 	cv2.imwrite('./raw/'+CAM_ID+'_'+d+'.png', img)
@@ -58,7 +56,7 @@ def alert_on_drone (img):
 while True:
 	frame = vs.read()
 	frame = frame if args.get("video", None) is None else frame[1]
-	text = "Unoccupied"
+	text = "no tracks"
 	if frame is None:
 		break
 	frame = imutils.resize(frame, width=500)
@@ -73,18 +71,11 @@ while True:
 	cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
 		cv2.CHAIN_APPROX_SIMPLE)
 	cnts = imutils.grab_contours(cnts)
-
 	for c in cnts:
-		# if the contour is too small, ignor		print('no drone')e it
 		if cv2.contourArea(c) < args["min_area"]:
 			continue
-		# check for max contour size here
-		# update our centroid tracker using the computed set of bounding
-		# box rectangles
-
 		(x, y, w, h) = cv2.boundingRect(c)
-
-		text = "Occupied"
+		text = "tracking"
 		# yishimish
 		if w > 400:
 			continue
