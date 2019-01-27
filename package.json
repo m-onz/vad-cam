@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/m-onz/vad-cam#readme",
   "dependencies": {
+    "mjpeg-server": "^0.3.0",
     "recursive-watch": "^1.1.4"
   }
 }

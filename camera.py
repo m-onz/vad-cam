@@ -25,6 +25,8 @@ DRONE = False
 
 CAM_ID = '0'
 
+clock = 0
+
 # print("[INFO] starting video stream...")
 # vs = VideoStream(src=0).start()
 # # vs = VideoStream(usePiCamera=True).start()
@@ -103,8 +105,8 @@ while True:
 			alert_on_drone (nframe)
 		label = "{}: {:.2f}%".format(label, proba * 100)
 
-		# frame = cv2.putText(frame, label, (x, y),
-			# cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+		frame = cv2.putText(frame, label, (x, y),
+			cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
 	for c in cnts:
 		if cv2.contourArea(c) < args["min_area"]:
@@ -112,20 +114,27 @@ while True:
 		(x, y, w, h) = cv2.boundingRect(c)
 		cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-	cv2.imwrite('./feed/'+CAM_ID+'_latest.png', frame)
+
+	clock += 1
+
+	if clock > 1000:
+		clock = 0
+
+	if clock % 11 == 0:
+		cv2.imwrite('./feed/'+CAM_ID+'_latest.jpg', frame)
 
 	cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),
 		(10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
 
-	# nframe = imutils.resize(frame, width=400)
-	# nimage = cv2.resize(nframe, (28, 28))
-	# nimage = nimage.astype("float") / 255.0
-	# nimage = img_to_array(nimage)
-	# nimage = np.expand_dims(nimage, axis=0)
-	# (notDRONE, DRONE) = model.predict(nimage)[0]
-	# label = "Not Drone"
-	# proba = notDRONE
-	# if DRONE > notDRONE:
+	#nframe = imutils.resize(frame, width=400)
+	#nimage = cv2.resize(nframe, (28, 28))
+	#nimage = nimage.astype("float") / 255.0
+	#nimage = img_to_array(nimage)
+	#nimage = np.expand_dims(nimage, axis=0)
+	#(notDRONE, DRONE) = model.predict(nimage)[0]
+	#label = "Not Drone"
+	#proba = notDRONE
+	#if DRONE > notDRONE:
 	# 	label = "Drone"
 	# 	proba = DRONE
 	# 	TOTAL_CONSEC += 1
@@ -138,11 +147,11 @@ while True:
 	# 	alert_on_drone (frame)
 	# label = "{}: {:.2f}%".format(label, proba * 100)
 	# frame = cv2.putText(frame, label, (10, 25),
-		# cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 	#cv2.imshow("Security Feed", frame)
-	key = cv2.waitKey(1) & 0xFF
-	if key == ord("q"):
-		break
+	#key = cv2.waitKey(1) & 0xFF
+	#if key == ord("q"):
+#		break
+>>>>>>> 798405173812e37ce3e80c9616f16c3a2b51645d
 
 vs.stop() if args.get("video", None) is None else vs.release()
 cv2.destroyAllWindows()
