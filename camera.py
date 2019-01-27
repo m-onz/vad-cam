@@ -40,7 +40,7 @@ print("[INFO] loading model...")
 model = load_model('./node-drone.model')
 
 print("[INFO] starting video stream...")
-vs = VideoStream(src=0).start()
+vs = VideoStream(src=1).start()
 # vs = VideoStream(usePiCamera=True).start()
 time.sleep(2.0)
 # model = load_model('./node-drone.model')
@@ -139,7 +139,7 @@ while True:
 	# label = "{}: {:.2f}%".format(label, proba * 100)
 	# frame = cv2.putText(frame, label, (10, 25),
 		# cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-	cv2.imshow("Security Feed", frame)
+	#cv2.imshow("Security Feed", frame)
 	key = cv2.waitKey(1) & 0xFF
 	if key == ord("q"):
 		break

@@ -1,0 +1,3 @@
+@reboot /home/pi/Desktop/reboot2.sh
+@reboot /home/pi/start_py3cv3.sh
+
